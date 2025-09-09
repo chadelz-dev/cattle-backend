@@ -1,6 +1,5 @@
 // backend/server.js
 const express = require('express');
-const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 const crmService = require('./services/crmService');
 const iotService = require('./services/iotService');
@@ -8,7 +7,6 @@ const weatherRoutes = require('./api/weather');
 const authService = require('./services/authService');
 const { Pool } = require('pg');
 
-dotenv.config();
 const app = express();
 app.use(express.json());
 
@@ -24,7 +22,6 @@ app.use(
 
 const PORT = process.env.PORT || 3000;
 
-const { Pool } = require('pg');
 console.log('DATABASE_URL:', process.env.DATABASE_URL || 'undefined'); // Debug
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,

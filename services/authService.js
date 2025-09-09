@@ -1,9 +1,7 @@
 // backend/services/authService.js
 const { Pool } = require('pg');
-const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-dotenv.config();
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
