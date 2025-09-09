@@ -24,9 +24,26 @@ app.use(
 
 const PORT = process.env.PORT || 3000;
 
+const { Pool } = require('pg');
+console.log('DATABASE_URL:', process.env.DATABASE_URL || 'undefined'); // Debug
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: true },
+  ssl: { rejectUnauthorized: false }, // Handle Neon SSL
+});
+
+app.get('/api/test-db', async (req, res) => {
+  try {
+    console.log('Attempting DB connection with:', process.env.DATABASE_URL);
+    const client = await pool.connect();
+    const result = await client.query('SELECT * FROM cattle_health LIMIT 1');
+    client.release();
+    res.json({ success: true, data: result.rows });
+  } catch (error) {
+    console.error('Database test error:', error.stack);
+    res
+      .status(500)
+      .json({ error: 'Database test error', details: error.message });
+  }
 });
 
 // Login route (before verifyToken middleware to bypass token checks)

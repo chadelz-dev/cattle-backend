@@ -2,15 +2,12 @@
 const { Pool } = require('pg');
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt'); // Change from 'bcryptjs' to 'bcrypt'
+const bcrypt = require('bcrypt');
 dotenv.config();
 
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false },
 });
 
 const login = async (name, password) => {
