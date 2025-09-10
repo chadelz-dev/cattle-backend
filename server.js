@@ -10,13 +10,24 @@ const { Pool } = require('pg');
 const app = express();
 app.use(express.json());
 
+// Add logging to debug CORS
+app.use((req, res, next) => {
+  console.log('Request Origin:', req.get('Origin'));
+  next();
+});
+
 const cors = require('cors');
 app.use(
   cors({
     origin: [
       'http://localhost:3000',
-      'https://chadelz-dev.github.io/cattle-frontend',
+      'http://localhost:3001', // Added for local testing
+      'https://chadelz-dev.github.io',
+      'https://chadelz-dev.github.io/cattle-frontend', // Added for extra coverage
     ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true, // Allow cookies or auth headers if needed
   })
 );
 
